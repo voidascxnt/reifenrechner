@@ -23,7 +23,7 @@ felgenrechner/
 
 ### **🚀 PROGRAMM STARTEN (immer wenn du es brauchst):**
 
-**1.** Doppelklick auf **`HIER-KLICKEN-STARTEN.bat`**  
+**1.** Doppelklick auf **`START.bat`**  
 **2.** Schwarzes Fenster öffnet sich (NICHT SCHLIEßEN!)  
 **3.** Browser öffnet automatisch die Felgenrechner-Seite  
 **4.** **FERTIG!** Jetzt kannst du loslegen! 🎯
