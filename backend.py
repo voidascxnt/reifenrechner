@@ -8,7 +8,7 @@ import json
 import csv
 from io import StringIO
 
-app = FastAPI(title="Smart Felgen-Reifen Kompatibilitäts-Rechner")
+app = FastAPI(title="Felgen-Reifen Kompatibilitäts-Rechner")
 
 # Statische Dateien servieren
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -195,13 +195,14 @@ def export_csv(
     def generate_csv():
         output = StringIO()
         writer = csv.writer(output)
-        writer.writerow(["Breite", "Flanke", "Durchmesser", "Felgenbreite", "Abweichung%", "Kategorie", "Scene Points", "Stretch", "TÜV"])
+        # Headers auf Englisch (keine Umlaute!)
+        writer.writerow(["Breite", "Flanke", "Durchmesser", "Felgenbreite", "Abweichung%", "Kategorie", "Scene_Points", "Stretch", "TUV"])
         
         for result in results:
             writer.writerow([
                 result.width, result.aspect, result.diameter, result.rim_width,
                 result.deviation_percent, result.category, result.scene_points, 
-                result.stretch_factor, "✅" if result.tuev_friendly else "⚠️"
+                result.stretch_factor, "OK" if result.tuev_friendly else "CHECK"  # Keine Umlaute!
             ])
             
         csv_content = output.getvalue()
@@ -211,9 +212,15 @@ def export_csv(
     return StreamingResponse(
         iter([generate_csv()]),
         media_type="text/csv",
-        headers={"Content-Disposition": "attachment; filename=felgen_kompatibilitaet.csv"}
+        # Dateiname OHNE Umlaute!
+        headers={"Content-Disposition": "attachment; filename=tire_compatibility.csv"}
     )
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    print("🚗 Felgenrechner Pro startet...")
+    print("🌐 Öffne: http://localhost:3000")
+    print("📱 Für Apple: Als App zum Home-Bildschirm hinzufügen")
+    print("🛑 Zum Beenden: Strg+C")
+    print("-" * 50)
+    uvicorn.run(app, host="0.0.0.0", port=3000)  # Port 3000 statt 8000
